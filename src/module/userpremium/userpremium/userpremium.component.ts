@@ -3,6 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { OccupationModel } from 'src/models/occupationmodel';
 import {OccupationdataService} from '../../../services/occupationdata.service';
 import { Options, ChangeContext, PointerType } from '@angular-slider/ngx-slider';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-userpremium',
@@ -16,15 +17,16 @@ export class UserpremiumComponent implements OnInit {
 occupationData : OccupationModel[] = [];
 premiumCalcFormGroup : FormGroup;
 enteredName : string;
+maxDate : Date = new Date();
 deducedAge : number;
 showAgeText : boolean = false;
 factorOnSelection:number;
-value: number = 10000;
+value: number = 5000;
   options: Options = {
-    floor: 10000,
+    floor: 5000,
     ceil: 1000000
   };
-  deathCoverageAmount: number = 10000;
+  deathCoverageAmount: number = 5000;
   finalPremium : string = '';
   disableButton : boolean = true;
   showPremiumStatement : boolean = false;
@@ -33,7 +35,7 @@ value: number = 10000;
 
  
 //ctor
-  constructor(private dataService : OccupationdataService, private fb:FormBuilder) { }
+  constructor(private dataService : OccupationdataService, private fb:FormBuilder, private router: Router) { }
 
 //hook
   ngOnInit(): void {
@@ -77,6 +79,7 @@ value: number = 10000;
     onUserChangeEnd(changeContext: ChangeContext): void {
       this.deathCoverageAmount = changeContext.value;
       //console.log(this.deathCoverageAmount);
+      this.showPremiumStatement = false;
       
     }
 
@@ -104,7 +107,14 @@ value: number = 10000;
       this.premiumCalcFormGroup.markAsTouched();
       this.showPremiumStatement = false;
       this.showAgeText = false;
+      this.value = 5000;
 
+    }
+
+    
+
+    navigateToHome(){
+      this.router.navigate(['/']);
     }
 
 }

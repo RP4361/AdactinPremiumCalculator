@@ -1,45 +1,68 @@
-<div class="container p-5">
-<form [formGroup]="premiumCalcFormGroup">
-    <div class="form-group">
-        <div class="col-md-6">
-            <input placeholder="Enter Name" type="text" formControlName="name">
-            <span class="text-danger" *ngIf="premiumCalcFormGroup.get('name').hasError('required') && premiumCalcFormGroup.get('name').touched">Name is required</span>
-        </div>
-        <div class="col-md-6">
-            <input placeholder="Enter Date of Birth" type="text" onfocus="(this.type='date')" formControlName="dob" (change)="calculateAndSetAge()">
-            <span class="text-danger" *ngIf="premiumCalcFormGroup.get('dob').hasError('required') && premiumCalcFormGroup.get('dob').touched">Date of Birth is required</span>
-        </div>
-        <div class="col-md-6">
-            <!-- <input placeholder="Calculated Age" [disabled]="true" [readOnly]="true" type="number" formControlName="age"> -->
-            <span *ngIf="showAgeText; else showEnterDate">Your Calculated Age is {{deducedAge}} years.</span>
-            <ng-template #showEnterDate>
-                <span>Enter your Date of Birth (mm/dd/yyyy) above to determine Age.</span>
-            </ng-template>
-            
-        </div>
-        <div class="col-md-6">
-            <select class="form-select form-select-sm mb-3" formControlName="occupation" (change)="changeOccupation()">
-                <option value="">Choose Occupation</option>
-                <option *ngFor="let occupation of occupationData" [ngValue]="occupation">{{occupation.occupation}}</option>
-            </select>
-            <span class="text-danger" *ngIf="premiumCalcFormGroup.get('occupation').hasError('required') && premiumCalcFormGroup.get('occupation').touched">Occupation is required</span>
-
-        </div>
-        <br/>
-        <br/>
-        <div class="col-md-6">
-            <ngx-slider [(value)]="value" [options]="options" (userChange)="onUserChangeEnd($event)"></ngx-slider>
-            <br/>
-            <span>*Minimum value for Coverage Amount is set as 10000 AUD. Please use this slider to increase the Coverage Amount.</span>
-        </div>
-        <div class="col-md-6">
-            <button type="button" [disabled]="!premiumCalcFormGroup.valid" (click)="btnCalculateYearlyPremium()">View Premium Details</button>
-            <button type="button" (click)="btnResetInputs()">Reset Entries</button>
-        </div>
-        <div *ngIf="showPremiumStatement">
-            Hi {{enteredName}}, your yearly premium based upon AUD {{deathCoverageAmount}} is comingup as {{finalPremium}}.
-            Please change the coverage amount to view changed values.
-        </div>
+<div class="bg">
+    <div class="pt1">
+        <img
+    width="100"
+    height="100"
+    src="assets/img1.png"
+    alt="assets/img1.png"/>
+    <h1 text-align:center>Premium Calculator</h1>
     </div>
-</form>
+    <div class="container p-5">
+        <h4>Please input below mandatory information to get your premium calculated.</h4>
+        <br/>
+
+    <form [formGroup]="premiumCalcFormGroup">
+        <div class="form-group">
+            <div class="col-md-6">
+                <span class="text-danger">*</span>
+                <input placeholder="Enter Name" type="text" formControlName="name">
+                <span class="text-danger" *ngIf="premiumCalcFormGroup.get('name').hasError('required') && premiumCalcFormGroup.get('name').touched">**Name is required</span>
+            </div>
+            <div class="col-md-6">
+                <span class="text-danger">*</span>
+                <input placeholder="Enter Date of Birth" max="{{maxDate | date:'yyyy-MM-dd'}}" type="text" onblur="(this.type='text')" onfocus="(this.type='date')" formControlName="dob" (change)="calculateAndSetAge()">
+                <span class="text-danger" *ngIf="premiumCalcFormGroup.get('dob').hasError('required') && premiumCalcFormGroup.get('dob').touched">**Date of Birth is required</span>
+            </div>
+            <div class="col-md-6">
+                <!-- <input placeholder="Calculated Age" [disabled]="true" [readOnly]="true" type="number" formControlName="age"> -->
+                <span *ngIf="showAgeText; else showEnterDate" class="text-success">Your Calculated Age is {{deducedAge}} years.</span>
+                <ng-template #showEnterDate>
+                    <span style="color:blue">##Your Age will be calculated based upon Date of Birth entered above.</span>
+                </ng-template>
+            </div>
+            <br/>
+            <div class="col-md-6">
+                <span class="text-danger">*</span>
+                <select class="form-select form-select-sm mb-3" formControlName="occupation" (change)="changeOccupation()">
+                    <option value="">Choose Occupation</option>
+                    <option *ngFor="let occupation of occupationData" [ngValue]="occupation">{{occupation.occupation}}</option>
+                </select>
+                <span class="text-danger" *ngIf="premiumCalcFormGroup.get('occupation').hasError('required') && premiumCalcFormGroup.get('occupation').touched">**Occupation is required</span>
+
+            </div>
+            <br/>
+            <br/>
+            <div class="col-md-6">
+                <ngx-slider [(value)]="value" [options]="options" (userChange)="onUserChangeEnd($event)"></ngx-slider>
+                <br/>
+                <span class="text-muted">*Minimum value for Coverage Amount is defaulted as A$5000. Please use this slider to increase the Coverage Amount upto A$1 Million.</span>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+
+            <div class="col-md-6">
+                <button class="btn btn-success" type="button" [disabled]="!premiumCalcFormGroup.valid" (click)="btnCalculateYearlyPremium()">View Premium Details</button>
+                <button class="btn btn-danger" type="button" [disabled]="premiumCalcFormGroup.pristine" (click)="btnResetInputs()">Reset Entries</button>
+            </div>
+            <div *ngIf="showPremiumStatement">
+                <span class="text-success">Hi {{enteredName |uppercase}}, your yearly premium based upon {{deathCoverageAmount|currency:"AUD":"symbol"}} is comingup as {{finalPremium|currency:"AUD":"symbol"}}.
+                Please change the coverage amount to view changed values.</span>
+            </div>
+            <br/>
+            <br/>
+            <button type="button" class="btn btn-link" (click)="navigateToHome()">Go Back</button>
+        </div>
+    </form>
+    </div>
 </div>
