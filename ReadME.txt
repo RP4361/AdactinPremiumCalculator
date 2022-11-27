@@ -44,6 +44,8 @@ Below are the salients regarding this poc -
         - Finally an yearly Premium is getting calculated and displayed.
         - User has to key in all the mandatory fields above.
         - User can reset the input values at any point of time.
+        - Buttons only get Enabled after successful Validation.
+        
         DEFAULTS -: 
             a)  I am calculating Age automatically based upon the DOB entered above.
             b)  Since in real world no one will be putting in a A$0 fro coverage Amount
