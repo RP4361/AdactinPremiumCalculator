@@ -1,0 +1,38 @@
+<div class="container p-5">
+<form [formGroup]="premiumCalcFormGroup">
+    <div class="form-group">
+        <div class="col-md-6">
+            <input placeholder="Enter Name" type="text" formControlName="name">
+        </div>
+        <div class="col-md-6">
+            <input placeholder="Enter Date of Birth" type="date" formControlName="dob" (change)="calculateAndSetAge()">
+        </div>
+        <div class="col-md-6">
+            <!-- <input placeholder="Calculated Age" [disabled]="true" [readOnly]="true" type="number" formControlName="age"> -->
+            <span *ngIf="showAgeText; else showEnterDate">Your Calculated Age is {{deducedAge}} years.</span>
+            <ng-template #showEnterDate>
+                <span>Enter your Date of Birth above to get your age.</span>
+            </ng-template>
+            
+        </div>
+        <div class="col-md-6">
+            <select class="form-select form-select-sm mb-3" formControlName="occupation" (change)="changeOccupation()">
+                <option value="">Choose Occupation</option>
+                <option *ngFor="let occupation of occupationData" [ngValue]="occupation">{{occupation.occupation}}</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <ngx-slider [(value)]="value" [options]="options" (userChange)="onUserChangeEnd($event)"></ngx-slider>
+            <br/>
+            <span>*Minimum value for Insurance Premium is set as 10000 AUD. Please use this slider to increase the Coverage Amount.</span>
+        </div>
+        <div class="col-md-6">
+            <button type="button" [disabled]="disableButton" (click)="calculateYearlyPremium()">View Premium Details</button>
+        </div>
+        <div *ngIf="showPremiumStatement">
+            Hi {{enteredName}}, your yearly premium based upon AUD {{deathCoverageAmount}} is comingup as {{finalPremium}}.
+            Please change the coverage amount to view changed values.
+        </div>
+    </div>
+</form>
+</div>
