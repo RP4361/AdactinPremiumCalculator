@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { OccupationModel } from 'src/models/occupationmodel';
 import {OccupationdataService} from '../../../services/occupationdata.service';
 import { Options, ChangeContext, PointerType } from '@angular-slider/ngx-slider';
@@ -16,13 +16,13 @@ export class UserpremiumComponent implements OnInit {
 occupationData : OccupationModel[] = [];
 premiumCalcFormGroup : FormGroup;
 enteredName : string;
-deducedAge : string;
+deducedAge : number;
 showAgeText : boolean = false;
 factorOnSelection:number;
 value: number = 10000;
   options: Options = {
     floor: 10000,
-    ceil: 10000000
+    ceil: 1000000
   };
   deathCoverageAmount: number = 10000;
   finalPremium : string = '';
@@ -39,10 +39,10 @@ value: number = 10000;
   ngOnInit(): void {
 
     this.premiumCalcFormGroup = this.fb.group({
-      'name' : new FormControl(),
+      'name' : new FormControl('', [Validators.required]),
       'age'  : new FormControl(),
-      'dob'  : new FormControl(),
-      'occupation'  : ['']
+      'dob'  : new FormControl('',[Validators.required]),
+      'occupation'  : new FormControl('',[Validators.required])
   })
 
 
@@ -58,8 +58,8 @@ value: number = 10000;
       //console.log('Today-',Date.now());
       let timeDiff = Math.abs(Date.now() - dateEntered);
       let age = Math.floor((timeDiff / (1000 * 3600 * 24))/365.25);
-      this.deducedAge = age.toString();
-      console.log('calculatedAge --',age);
+      this.deducedAge = age;
+      console.log('Age after Date setting --',this.deducedAge);
       //this.premiumCalcFormGroup.get('age')?.patchValue(age);
       this.showAgeText = true;
     }
@@ -68,23 +68,43 @@ value: number = 10000;
     changeOccupation(){
       let incomingOccupation : OccupationModel = this.premiumCalcFormGroup.get('occupation')?.value;
       this.factorOnSelection = incomingOccupation.factor;
-      console.log(incomingOccupation);
-      console.log(this.factorOnSelection);
+      //console.log(incomingOccupation);
+      //console.log(this.factorOnSelection);
       this.disableButton = false;
     }
 
 
     onUserChangeEnd(changeContext: ChangeContext): void {
       this.deathCoverageAmount = changeContext.value;
-      console.log(this.deathCoverageAmount);
+      //console.log(this.deathCoverageAmount);
       
     }
 
-    calculateYearlyPremium() : void{
-      let age : number = this.premiumCalcFormGroup.get('age')?.value;
+    btnCalculateYearlyPremium() : void{
+      let age : number = this.deducedAge;
       this.enteredName = this.premiumCalcFormGroup.get('name')?.value;
+      console.log('age before calculation -', age);
+      console.log('deathCoverageAmount before calculation -', this.deathCoverageAmount);
+      console.log('factorOnSelection before calculation -', this.factorOnSelection);
+      
       this.finalPremium = (((this.deathCoverageAmount*this.factorOnSelection*age)/1000)*12).toString();
       this.showPremiumStatement = true;
 
     }
+
+    btnResetInputs():void{
+      this.premiumCalcFormGroup.reset();
+      this.premiumCalcFormGroup = this.fb.group({
+        'name' : new FormControl('', [Validators.required]),
+        'age'  : new FormControl(),
+        'dob'  : new FormControl('',[Validators.required]),
+        'occupation'  : new FormControl('',[Validators.required])
+    });
+      this.premiumCalcFormGroup.markAsPristine();
+      this.premiumCalcFormGroup.markAsTouched();
+      this.showPremiumStatement = false;
+      this.showAgeText = false;
+
+    }
+
 }

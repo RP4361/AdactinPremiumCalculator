@@ -3,15 +3,17 @@
     <div class="form-group">
         <div class="col-md-6">
             <input placeholder="Enter Name" type="text" formControlName="name">
+            <span class="text-danger" *ngIf="premiumCalcFormGroup.get('name').hasError('required') && premiumCalcFormGroup.get('name').touched">Name is required</span>
         </div>
         <div class="col-md-6">
-            <input placeholder="Enter Date of Birth" type="date" formControlName="dob" (change)="calculateAndSetAge()">
+            <input placeholder="Enter Date of Birth" type="text" onfocus="(this.type='date')" formControlName="dob" (change)="calculateAndSetAge()">
+            <span class="text-danger" *ngIf="premiumCalcFormGroup.get('dob').hasError('required') && premiumCalcFormGroup.get('dob').touched">Date of Birth is required</span>
         </div>
         <div class="col-md-6">
             <!-- <input placeholder="Calculated Age" [disabled]="true" [readOnly]="true" type="number" formControlName="age"> -->
             <span *ngIf="showAgeText; else showEnterDate">Your Calculated Age is {{deducedAge}} years.</span>
             <ng-template #showEnterDate>
-                <span>Enter your Date of Birth above to get your age.</span>
+                <span>Enter your Date of Birth (mm/dd/yyyy) above to determine Age.</span>
             </ng-template>
             
         </div>
@@ -20,14 +22,19 @@
                 <option value="">Choose Occupation</option>
                 <option *ngFor="let occupation of occupationData" [ngValue]="occupation">{{occupation.occupation}}</option>
             </select>
+            <span class="text-danger" *ngIf="premiumCalcFormGroup.get('occupation').hasError('required') && premiumCalcFormGroup.get('occupation').touched">Occupation is required</span>
+
         </div>
+        <br/>
+        <br/>
         <div class="col-md-6">
             <ngx-slider [(value)]="value" [options]="options" (userChange)="onUserChangeEnd($event)"></ngx-slider>
             <br/>
-            <span>*Minimum value for Insurance Premium is set as 10000 AUD. Please use this slider to increase the Coverage Amount.</span>
+            <span>*Minimum value for Coverage Amount is set as 10000 AUD. Please use this slider to increase the Coverage Amount.</span>
         </div>
         <div class="col-md-6">
-            <button type="button" [disabled]="disableButton" (click)="calculateYearlyPremium()">View Premium Details</button>
+            <button type="button" [disabled]="!premiumCalcFormGroup.valid" (click)="btnCalculateYearlyPremium()">View Premium Details</button>
+            <button type="button" (click)="btnResetInputs()">Reset Entries</button>
         </div>
         <div *ngIf="showPremiumStatement">
             Hi {{enteredName}}, your yearly premium based upon AUD {{deathCoverageAmount}} is comingup as {{finalPremium}}.
