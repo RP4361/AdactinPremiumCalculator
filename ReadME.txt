@@ -56,6 +56,7 @@ Below are the salients regarding this poc -
             Branch : master
             Angular version 13
             Please perform an npm install and npm run start.
+            Please take a look at commit history for info.
 
             I will also attach a word document to provide some excerpts of the poc.
 
