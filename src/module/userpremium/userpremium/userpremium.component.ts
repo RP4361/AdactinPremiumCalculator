@@ -48,9 +48,10 @@ value: number = 5000;
   })
 
 
-      this.dataService.GetOccupationData().subscribe(data=>{
-        this.occupationData = data;
-        console.log(this.occupationData);
+      this.dataService.GetOccupationData().subscribe(
+        data=>{
+          this.occupationData = data;
+          console.log(this.occupationData);
       })
     }
 

@@ -4,6 +4,7 @@ import { UserpremiumComponent } from './userpremium/userpremium.component';
 import { Routes } from '@angular/router';
 import {ReactiveFormsModule} from '@angular/forms';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
   { path: '', component: UserpremiumComponent },
@@ -16,7 +17,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    NgxSliderModule
+    NgxSliderModule,
+    HttpClientModule
   ]
 })
 export class UserpremiumModule { }
