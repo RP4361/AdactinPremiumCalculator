@@ -20,6 +20,7 @@ enteredName : string;
 maxDate : Date = new Date();
 deducedAge : number;
 showAgeText : boolean = false;
+chosenOccupation : string;
 factorOnSelection:number;
 value: number = 5000;
   options: Options = {
@@ -70,10 +71,13 @@ value: number = 5000;
 
     changeOccupation(){
       let incomingOccupation : OccupationModel = this.premiumCalcFormGroup.get('occupation')?.value;
+      this.chosenOccupation = incomingOccupation.occupation;
       this.factorOnSelection = incomingOccupation.factor;
       //console.log(incomingOccupation);
       //console.log(this.factorOnSelection);
       this.disableButton = false;
+      this.showPremiumStatement = false;
+
     }
 
 
@@ -107,7 +111,7 @@ value: number = 5000;
       this.premiumCalcFormGroup.markAsPristine();
       this.premiumCalcFormGroup.markAsTouched();
       this.showPremiumStatement = false;
-      this.showAgeText = false;
+      this.showAgeText = false;      
       this.value = 5000;
 
     }

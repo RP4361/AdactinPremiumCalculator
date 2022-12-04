@@ -40,8 +40,8 @@
                     <option *ngFor="let occupation of occupationData" [ngValue]="occupation">{{occupation.occupation}}</option>
                 </select>
                 <span class="text-danger" *ngIf="premiumCalcFormGroup.get('occupation').hasError('required') && premiumCalcFormGroup.get('occupation').touched">**Occupation is required</span>
-
             </div>
+            <br/>
             <br/>
             <div class="col-md-6">
                 <ngx-slider [(value)]="value" [options]="options" (userChange)="onUserChangeEnd($event)"></ngx-slider>
@@ -54,12 +54,11 @@
                 <button class="btn btn-danger" type="button" [disabled]="premiumCalcFormGroup.pristine" (click)="btnResetInputs()">Reset Entries</button>
             </div>
             <br/>
-            <br/>
             <div *ngIf="showPremiumStatement">
                 <!-- <span style="color:rgb(10, 10, 11)">Hi {{enteredName |uppercase}}, your yearly premium based upon {{deathCoverageAmount|currency:"AUD":"symbol"}} is comingup as {{finalPremium|currency:"AUD":"symbol"}}.
                 Please change the coverage amount to view changed values.</span> -->
-                <h5 style="color:rgb(62, 2, 2)">Hi {{enteredName |uppercase}}, your yearly premium based upon {{deathCoverageAmount|currency:"AUD":"symbol"}} is comingup as {{finalPremium|currency:"AUD":"symbol"}}.
-                    Please change the coverage amount to view changed values or Reset the entries.</h5>
+                <span style="color:rgb(62, 2, 2);font-family: Georgia, serif;font-weight:bold;">Hi {{enteredName |uppercase}}, you are {{chosenOccupation | uppercase}} & your yearly premium based upon {{deathCoverageAmount|currency:"AUD":"symbol"}} is comingup as {{finalPremium|currency:"AUD":"symbol"}}.
+                    <br/>Please change the coverage amount to view changed values or Reset the entries.</span>
             </div>
             <br/>
             <br/>
